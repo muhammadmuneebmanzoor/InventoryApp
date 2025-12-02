@@ -1,0 +1,211 @@
+=== PRODUCT REPORT ===
+
+Product ID: 1
+Name: Apple
+Category: Fruit
+Price: 10.0
+Quantity: 52
+-----------------------------
+Product ID: 2
+Name: Banana
+Category: Fruit
+Price: 5.0
+Quantity: 102
+-----------------------------
+Product ID: 3
+Name: Apple
+Category: Fruit
+Price: 10.0
+Quantity: 50
+-----------------------------
+Product ID: 4
+Name: Banana
+Category: Fruit
+Price: 5.0
+Quantity: 100
+-----------------------------
+Product ID: 5
+Name: Orange
+Category: Fruit
+Price: 12.0
+Quantity: 80
+-----------------------------
+Product ID: 6
+Name: Tomato
+Category: Vegetable
+Price: 8.5
+Quantity: 120
+-----------------------------
+Product ID: 7
+Name: Potato
+Category: Vegetable
+Price: 4.0
+Quantity: 200
+-----------------------------
+Product ID: 8
+Name: Milk
+Category: Dairy
+Price: 15.0
+Quantity: 60
+-----------------------------
+Product ID: 9
+Name: Cheese
+Category: Dairy
+Price: 25.0
+Quantity: 30
+-----------------------------
+Product ID: 10
+Name: Bread
+Category: Bakery
+Price: 5.5
+Quantity: 100
+-----------------------------
+Product ID: 11
+Name: Eggs
+Category: Poultry
+Price: 2.5
+Quantity: 300
+-----------------------------
+Product ID: 12
+Name: Chicken
+Category: Meat
+Price: 50.0
+Quantity: 40
+-----------------------------
+Product ID: 13
+Name: Rice
+Category: Grain
+Price: 30.0
+Quantity: 150
+-----------------------------
+Product ID: 14
+Name: Wheat Flour
+Category: Grain
+Price: 20.0
+Quantity: 100
+-----------------------------
+Product ID: 16
+Name: Apple
+Category: Fruit
+Price: 10.0
+Quantity: 1
+-----------------------------
+Product ID: 18
+Name: Banana
+Category: Fruit
+Price: 5.0
+Quantity: 100
+-----------------------------
+Product ID: 19
+Name: roti
+Category: bake
+Price: 10.0
+Quantity: 50
+-----------------------------
+Product ID: 20
+Name: hamza
+Category: dangar
+Price: 69.0
+Quantity: 2
+-----------------------------
+Product ID: 21
+Name: chips
+Category: fast food
+Price: 100.0
+Quantity: 5
+-----------------------------
+Product ID: 23
+Name: rice
+Category: food item
+Price: 1000.0
+Quantity: 10
+-----------------------------
+
+
+=== SUPPLIER REPORT ===
+
+Supplier ID: 1
+Name: Fresh Fruits Co
+Contact: 123456789
+Email: contact@freshfruits.com
+-----------------------------
+Supplier ID: 2
+Name: Green Supply
+Contact: 987654321
+Email: info@greensupply.com
+-----------------------------
+Supplier ID: 3
+Name: Fresh Fruits Co
+Contact: 123456789
+Email: contact@freshfruits.com
+-----------------------------
+Supplier ID: 4
+Name: Green Supply
+Contact: 987654321
+Email: info@greensupply.com
+-----------------------------
+Supplier ID: 5
+Name: Healthy Farms
+Contact: 111222333
+Email: sales@healthyfarms.com
+-----------------------------
+Supplier ID: 6
+Name: Organic Foods Ltd
+Contact: 444555666
+Email: contact@organicfoods.com
+-----------------------------
+Supplier ID: 7
+Name: Dairy Best
+Contact: 444444
+Email: info@dairybest.com
+-----------------------------
+Supplier ID: 8
+Name: Bakers Hub
+Contact: 123123123
+Email: support@bakershub.com
+-----------------------------
+Supplier ID: 9
+Name: Grain Traders
+Contact: 321321321
+Email: trading@graintraders.com
+-----------------------------
+Supplier ID: 10
+Name: Poultry House
+Contact: 654654654
+Email: orders@poultryhouse.com
+-----------------------------
+Supplier ID: 11
+Name: Fresh Vegetables Co
+Contact: 987987987
+Email: fresh@vegco.com
+-----------------------------
+Supplier ID: 12
+Name: Meat Masters
+Contact: 159159159
+Email: sales@meatmasters.com
+-----------------------------
+Supplier ID: 14
+Name: azaz  sweets
+Contact: 0307399807
+Email: azaz69@gmail.com
+-----------------------------
+Supplier ID: 16
+Name: muneeb
+Contact: 03259539060
+Email: muneeb@1214
+-----------------------------
+Supplier ID: 17
+Name: talha
+Contact: 123
+Email: @talha
+-----------------------------
+Supplier ID: 19
+Name: syed hasan 
+Contact: 03238236
+Email: syed@shah
+-----------------------------
+Supplier ID: 20
+Name: Rao
+Contact: 121111222
+Email: rao@123
+-----------------------------
