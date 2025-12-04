@@ -7,25 +7,28 @@ public class InventoryApp extends JFrame {
 
     InventoryApp() {
         setTitle("Inventory Management System");
-        setSize(600, 400);
+        setSize(700, 500);
         setLocationRelativeTo(null);
+        setMinimumSize(new Dimension(600, 400));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Background
-        getContentPane().setBackground(Color.LIGHT_GRAY);
+        // Main panel
+        JPanel mainPanel = new JPanel(new BorderLayout(0, 20));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        mainPanel.setBackground(new Color(245, 245, 245));
+        add(mainPanel, BorderLayout.CENTER);
 
         // Title
         JLabel title = new JLabel("Inventory Management System", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
-        title.setForeground(Color.BLACK);
-        add(title, BorderLayout.NORTH);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        title.setForeground(new Color(34, 49, 63));
+        mainPanel.add(title, BorderLayout.NORTH);
 
-        // Button panel (vertical, center mein)
-        JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 10, 10));
-        buttonPanel.setBackground(Color.LIGHT_GRAY);
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        // Button panel (vertical)
+        JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 15, 15));
+        buttonPanel.setBackground(new Color(245, 245, 245));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 150, 20, 150));
 
         JButton productButton = new JButton("Add Product");
         JButton supplierButton = new JButton("Manage Suppliers");
@@ -34,11 +37,21 @@ public class InventoryApp extends JFrame {
 
         JButton[] buttons = {productButton, supplierButton, reportButton, exitButton};
         for (JButton btn : buttons) {
-            btn.setBackground(new Color(34, 139, 34));
+            btn.setBackground(new Color(52, 152, 219)); // consistent blue theme
             btn.setForeground(Color.WHITE);
             btn.setFocusPainted(false);
-            btn.setFont(new Font("Arial", Font.BOLD, 14));
-            btn.setPreferredSize(new Dimension(200, 40));
+            btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            // Hover effect
+            btn.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseEntered(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(new Color(41, 128, 185));
+                }
+                public void mouseExited(java.awt.event.MouseEvent evt) {
+                    btn.setBackground(new Color(52, 152, 219));
+                }
+            });
         }
 
         buttonPanel.add(productButton);
@@ -46,7 +59,7 @@ public class InventoryApp extends JFrame {
         buttonPanel.add(reportButton);
         buttonPanel.add(exitButton);
 
-        add(buttonPanel, BorderLayout.CENTER);  // Buttons ko center mein vertical
+        mainPanel.add(buttonPanel, BorderLayout.CENTER);
 
         // Action listeners
         productButton.addActionListener(e -> new ProductUI());
@@ -95,6 +108,7 @@ public class InventoryApp extends JFrame {
     }
 
     public static void main(String[] args) {
-        new LoginUI();
+        try { UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel"); } catch(Exception e) {}
+        SwingUtilities.invokeLater(LoginUI::new);
     }
 }

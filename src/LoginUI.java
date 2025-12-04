@@ -4,56 +4,84 @@ import java.sql.*;
 
 public class LoginUI extends JFrame {
 
-    JTextField usernameField;
-    JPasswordField passwordField;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
 
     public LoginUI() {
         setTitle("Inventory System Login");
-        setSize(400, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(500, 400);
         setLocationRelativeTo(null);
+        setMinimumSize(new Dimension(400, 300)); // minimum size
         setLayout(new BorderLayout());
 
-        getContentPane().setBackground(Color.LIGHT_GRAY);
+        // Main panel with padding
+        JPanel mainPanel = new JPanel(new BorderLayout(0, 20));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        mainPanel.setBackground(new Color(245, 245, 245));
+        add(mainPanel, BorderLayout.CENTER);
 
-        JLabel title = new JLabel("Sign In", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
-        add(title, BorderLayout.NORTH);
+        // Title
+        JLabel title = new JLabel("Inventory Management", SwingConstants.CENTER);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        title.setForeground(new Color(34, 49, 63));
+        mainPanel.add(title, BorderLayout.NORTH);
 
-        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
-        panel.setBackground(Color.LIGHT_GRAY);
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        // Form panel with GridBagLayout for flexible resizing
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(new Color(245, 245, 245));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0; // allows fields to expand
 
-        panel.add(new JLabel("Username:"));
+        // Username
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        JLabel userLabel = new JLabel("Username:");
+        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(userLabel, gbc);
+
+        gbc.gridx = 1;
         usernameField = new JTextField();
-        panel.add(usernameField);
+        usernameField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(usernameField, gbc);
 
-        panel.add(new JLabel("Password:"));
+        // Password
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        JLabel passLabel = new JLabel("Password:");
+        passLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(passLabel, gbc);
+
+        gbc.gridx = 1;
         passwordField = new JPasswordField();
-        panel.add(passwordField);
+        passwordField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(passwordField, gbc);
 
-        add(panel, BorderLayout.CENTER);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
 
-        // Login Button
+        // Buttons Panel
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+        buttonPanel.setBackground(new Color(245, 245, 245));
+
         JButton loginButton = new JButton("Login");
-        loginButton.setBackground(new Color(34, 139, 34));
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        loginButton.setBackground(new Color(52, 152, 219));
         loginButton.setForeground(Color.WHITE);
+        loginButton.setFocusPainted(false);
         loginButton.addActionListener(e -> authenticate());
+        buttonPanel.add(loginButton);
 
-        // Forgot Password Button
         JButton forgotButton = new JButton("Forgot Password?");
+        forgotButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        forgotButton.setForeground(new Color(41, 128, 185));
+        forgotButton.setContentAreaFilled(false);
         forgotButton.setBorder(null);
-        forgotButton.setForeground(Color.BLUE);
-        forgotButton.setBackground(Color.LIGHT_GRAY);
         forgotButton.addActionListener(e -> new ForgotPasswordUI());
+        buttonPanel.add(forgotButton);
 
-        JPanel bottomPanel = new JPanel(new GridLayout(2,1));
-        bottomPanel.setBackground(Color.LIGHT_GRAY);
-        bottomPanel.add(loginButton);
-        bottomPanel.add(forgotButton);
-
-        add(bottomPanel, BorderLayout.SOUTH);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -68,7 +96,6 @@ public class LoginUI extends JFrame {
         }
 
         try(Connection con = DB.getConnection()) {
-
             PreparedStatement ps = con.prepareStatement(
                     "SELECT * FROM users WHERE username=? AND password=?"
             );
@@ -92,6 +119,11 @@ public class LoginUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        new LoginUI();
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        SwingUtilities.invokeLater(LoginUI::new);
     }
 }

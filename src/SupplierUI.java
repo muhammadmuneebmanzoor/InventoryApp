@@ -6,63 +6,83 @@ import java.sql.*;
 
 public class SupplierUI extends JFrame {
 
-    JTextField nameField, contactField, emailField, searchField;
-    JTable table;
-    DefaultTableModel model;
+    private JTextField nameField, contactField, emailField, searchField;
+    private JTable table;
+    private DefaultTableModel model;
 
     public SupplierUI() {
         setTitle("Supplier Management");
-        setSize(700, 500);
+        setSize(750, 550);
+        setMinimumSize(new Dimension(700,500));
         setLocationRelativeTo(null);
-        getContentPane().setBackground(Color.LIGHT_GRAY);
         setLayout(new BorderLayout(10, 10));
 
         // --- Top panel for supplier input fields ---
-        JPanel inputPanel = new JPanel(new GridLayout(3, 2, 10, 10));
-        inputPanel.setBackground(Color.LIGHT_GRAY);
+        JPanel inputPanel = new JPanel(new GridBagLayout());
+        inputPanel.setBackground(new Color(245, 245, 245));
         inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 0, 50));
-        inputPanel.add(new JLabel("Name:")); nameField = new JTextField(); inputPanel.add(nameField);
-        inputPanel.add(new JLabel("Contact:")); contactField = new JTextField(); inputPanel.add(contactField);
-        inputPanel.add(new JLabel("Email:")); emailField = new JTextField(); inputPanel.add(emailField);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10,10,10,10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+
+        String[] labels = {"Name:", "Contact:", "Email:"};
+        JTextField[] fields = new JTextField[3];
+
+        for(int i=0;i<3;i++){
+            gbc.gridx=0; gbc.gridy=i;
+            JLabel lbl = new JLabel(labels[i]);
+            lbl.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            inputPanel.add(lbl, gbc);
+
+            gbc.gridx=1;
+            fields[i] = new JTextField();
+            fields[i].setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            inputPanel.add(fields[i], gbc);
+        }
+        nameField=fields[0]; contactField=fields[1]; emailField=fields[2];
 
         add(inputPanel, BorderLayout.NORTH);
 
         // --- Center panel for buttons + search + table ---
-        JPanel centerPanel = new JPanel(new BorderLayout(10, 10));
-        centerPanel.setBackground(Color.LIGHT_GRAY);
+        JPanel centerPanel = new JPanel(new BorderLayout(10,10));
+        centerPanel.setBackground(new Color(245, 245, 245));
 
-        // Button panel (top)
+        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        buttonPanel.setBackground(Color.LIGHT_GRAY);
-        JButton addButton = new JButton("Add Supplier");
-        JButton updateButton = new JButton("Update Supplier");
-        JButton deleteButton = new JButton("Delete Supplier");
+        buttonPanel.setBackground(new Color(245, 245, 245));
+
+        JButton addButton = createStyledButton("Add Supplier");
+        JButton updateButton = createStyledButton("Update Supplier");
+        JButton deleteButton = createStyledButton("Delete Supplier");
+
         JButton[] buttons = {addButton, updateButton, deleteButton};
-        for(JButton btn : buttons){
-            btn.setBackground(new Color(34,139,34));
-            btn.setForeground(Color.WHITE);
-            btn.setFocusPainted(false);
-            btn.setFont(new Font("Arial", Font.BOLD, 14));
-            btn.setPreferredSize(new Dimension(150,40));
-            buttonPanel.add(btn);
-        }
+        for(JButton btn: buttons) buttonPanel.add(btn);
         centerPanel.add(buttonPanel, BorderLayout.NORTH);
 
         // Search panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        searchPanel.setBackground(Color.LIGHT_GRAY);
-        searchPanel.add(new JLabel("Search:"));
+        searchPanel.setBackground(new Color(245, 245, 245));
+        JLabel searchLabel = new JLabel("Search:");
+        searchLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
         searchField = new JTextField(20);
+        searchField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        searchPanel.add(searchLabel);
         searchPanel.add(searchField);
-        centerPanel.add(searchPanel, BorderLayout.CENTER);
 
         // Table
         table = new JTable();
         model = new DefaultTableModel(new String[]{"ID","Name","Contact","Email"},0);
         table.setModel(model);
         loadSuppliers();
-        centerPanel.add(new JScrollPane(table), BorderLayout.SOUTH);
 
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBackground(new Color(245, 245, 245));
+        tablePanel.add(searchPanel, BorderLayout.NORTH);
+        tablePanel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        centerPanel.add(tablePanel, BorderLayout.CENTER);
         add(centerPanel, BorderLayout.CENTER);
 
         // --- Action listeners ---
@@ -70,31 +90,10 @@ public class SupplierUI extends JFrame {
         updateButton.addActionListener(e -> updateSupplier());
         deleteButton.addActionListener(e -> deleteSupplier());
 
-        // Search functionality
         searchField.addKeyListener(new KeyAdapter(){
-            public void keyReleased(KeyEvent e){
-                String keyword = searchField.getText().toLowerCase();
-                model.setRowCount(0);
-                try(Connection con = DB.getConnection()){
-                    String sql = "SELECT * FROM supplier WHERE name LIKE ? OR contact LIKE ? OR email LIKE ?";
-                    PreparedStatement ps = con.prepareStatement(sql);
-                    ps.setString(1, "%"+keyword+"%");
-                    ps.setString(2, "%"+keyword+"%");
-                    ps.setString(3, "%"+keyword+"%");
-                    ResultSet rs = ps.executeQuery();
-                    while(rs.next()){
-                        model.addRow(new Object[]{
-                                rs.getInt("supplier_id"),
-                                rs.getString("name"),
-                                rs.getString("contact"),
-                                rs.getString("email")
-                        });
-                    }
-                }catch(Exception ex){ ex.printStackTrace(); }
-            }
+            public void keyReleased(KeyEvent e){ searchSuppliers(searchField.getText()); }
         });
 
-        // Populate fields when selecting row
         table.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
                 int row = table.getSelectedRow();
@@ -109,11 +108,46 @@ public class SupplierUI extends JFrame {
         setVisible(true);
     }
 
+    private JButton createStyledButton(String text){
+        JButton btn = new JButton(text);
+        btn.setBackground(new Color(52, 152, 219));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        btn.setPreferredSize(new Dimension(150,40));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt){ btn.setBackground(new Color(41,128,185)); }
+            public void mouseExited(java.awt.event.MouseEvent evt){ btn.setBackground(new Color(52,152,219)); }
+        });
+        return btn;
+    }
+
     private void loadSuppliers(){
         model.setRowCount(0);
         try(Connection con = DB.getConnection()){
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM supplier");
+            while(rs.next()){
+                model.addRow(new Object[]{
+                        rs.getInt("supplier_id"),
+                        rs.getString("name"),
+                        rs.getString("contact"),
+                        rs.getString("email")
+                });
+            }
+        } catch(Exception e){ e.printStackTrace(); }
+    }
+
+    private void searchSuppliers(String keyword){
+        model.setRowCount(0);
+        try(Connection con = DB.getConnection()){
+            String sql = "SELECT * FROM supplier WHERE name LIKE ? OR contact LIKE ? OR email LIKE ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1,"%"+keyword+"%");
+            ps.setString(2,"%"+keyword+"%");
+            ps.setString(3,"%"+keyword+"%");
+            ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 model.addRow(new Object[]{
                         rs.getInt("supplier_id"),
@@ -173,5 +207,7 @@ public class SupplierUI extends JFrame {
 
     private void clearFields(){ nameField.setText(""); contactField.setText(""); emailField.setText(""); }
 
-    public static void main(String[] args){ new SupplierUI(); }
+    public static void main(String[] args){
+        SwingUtilities.invokeLater(SupplierUI::new);
+    }
 }

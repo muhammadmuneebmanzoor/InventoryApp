@@ -4,58 +4,112 @@ import java.sql.*;
 
 public class ForgotPasswordUI extends JFrame {
 
-    JTextField usernameField;
-    JTextField secretKeyField;
-    JPasswordField newPasswordField;
-    JPasswordField confirmPasswordField;
+    private JTextField usernameField;
+    private JTextField secretKeyField;
+    private JPasswordField newPasswordField;
+    private JPasswordField confirmPasswordField;
 
     public ForgotPasswordUI() {
-
         setTitle("Reset Password");
-        setSize(400, 350);
+        setSize(450, 400);
         setLocationRelativeTo(null);
+        setMinimumSize(new Dimension(400, 350));
         setLayout(new BorderLayout());
-        getContentPane().setBackground(Color.LIGHT_GRAY);
 
+        // Main panel
+        JPanel mainPanel = new JPanel(new BorderLayout(0, 20));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        mainPanel.setBackground(new Color(245, 245, 245));
+        add(mainPanel, BorderLayout.CENTER);
+
+        // Title
         JLabel title = new JLabel("Reset Password", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 22));
-        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
-        add(title, BorderLayout.NORTH);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        title.setForeground(new Color(34, 49, 63));
+        mainPanel.add(title, BorderLayout.NORTH);
 
-        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
-        panel.setBackground(Color.LIGHT_GRAY);
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        // Form panel
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(new Color(245, 245, 245));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
 
-        // Fields
-        panel.add(new JLabel("Username:"));
+        // Username
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        JLabel userLabel = new JLabel("Username:");
+        userLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(userLabel, gbc);
+
+        gbc.gridx = 1;
         usernameField = new JTextField();
-        panel.add(usernameField);
+        usernameField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(usernameField, gbc);
 
-        panel.add(new JLabel("Secret Key:"));
+        // Secret Key
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        JLabel keyLabel = new JLabel("Secret Key:");
+        keyLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(keyLabel, gbc);
+
+        gbc.gridx = 1;
         secretKeyField = new JTextField();
-        panel.add(secretKeyField);
+        secretKeyField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(secretKeyField, gbc);
 
-        panel.add(new JLabel("New Password:"));
+        // New Password
+        gbc.gridy = 2;
+        gbc.gridx = 0;
+        JLabel newPassLabel = new JLabel("New Password:");
+        newPassLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(newPassLabel, gbc);
+
+        gbc.gridx = 1;
         newPasswordField = new JPasswordField();
-        panel.add(newPasswordField);
+        newPasswordField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(newPasswordField, gbc);
 
-        panel.add(new JLabel("Confirm Password:"));
+        // Confirm Password
+        gbc.gridy = 3;
+        gbc.gridx = 0;
+        JLabel confirmPassLabel = new JLabel("Confirm Password:");
+        confirmPassLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(confirmPassLabel, gbc);
+
+        gbc.gridx = 1;
         confirmPasswordField = new JPasswordField();
-        panel.add(confirmPasswordField);
+        confirmPasswordField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        formPanel.add(confirmPasswordField, gbc);
 
-        add(panel, BorderLayout.CENTER);
+        mainPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Reset Button
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(245, 245, 245));
 
         JButton resetBtn = new JButton("Reset Password");
-        resetBtn.setBackground(new Color(34, 139, 34));
+        resetBtn.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        resetBtn.setBackground(new Color(52, 152, 219));
         resetBtn.setForeground(Color.WHITE);
-        resetBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        resetBtn.setFocusPainted(false);
+        resetBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         resetBtn.addActionListener(e -> resetPassword());
 
-        JPanel bottom = new JPanel();
-        bottom.setBackground(Color.LIGHT_GRAY);
-        bottom.add(resetBtn);
+        // Hover effect
+        resetBtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                resetBtn.setBackground(new Color(41, 128, 185));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                resetBtn.setBackground(new Color(52, 152, 219));
+            }
+        });
 
-        add(bottom, BorderLayout.SOUTH);
+        buttonPanel.add(resetBtn);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
@@ -78,7 +132,6 @@ public class ForgotPasswordUI extends JFrame {
 
         try(Connection con = DB.getConnection()) {
 
-            // Check if username + secret key match
             PreparedStatement check = con.prepareStatement(
                     "SELECT * FROM users WHERE username=? AND secret_key=?"
             );
@@ -92,13 +145,11 @@ public class ForgotPasswordUI extends JFrame {
                 return;
             }
 
-            // Update password
             PreparedStatement update = con.prepareStatement(
                     "UPDATE users SET password=? WHERE username=?"
             );
             update.setString(1, newPass);
             update.setString(2, username);
-
             update.executeUpdate();
 
             JOptionPane.showMessageDialog(this, "Password Updated Successfully!");

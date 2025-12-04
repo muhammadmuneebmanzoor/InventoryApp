@@ -7,91 +7,97 @@ import java.util.HashMap;
 
 public class ProductUI extends JFrame {
 
-    JTextField nameField, categoryField, priceField, quantityField, searchField;
-    JComboBox<String> supplierBox;
-    JTable table;
-    DefaultTableModel model;
-    HashMap<String, Integer> supplierMap = new HashMap<>();
+    private JTextField nameField, categoryField, priceField, quantityField, searchField;
+    private JComboBox<String> supplierBox;
+    private JTable table;
+    private DefaultTableModel model;
+    private HashMap<String, Integer> supplierMap = new HashMap<>();
 
     public ProductUI() {
         setTitle("Product Management");
         setSize(950, 600);
         setLocationRelativeTo(null);
-        getContentPane().setBackground(Color.LIGHT_GRAY);
+        setMinimumSize(new Dimension(900, 550));
         setLayout(new BorderLayout(10, 10));
 
         // --- Top panel for product input fields ---
-        JPanel inputPanel = new JPanel(new GridLayout(5,2,10,10));
-        inputPanel.setBackground(Color.LIGHT_GRAY);
-        inputPanel.setBorder(BorderFactory.createEmptyBorder(20,50,0,50));
+        JPanel inputPanel = new JPanel(new GridBagLayout());
+        inputPanel.setBackground(new Color(245, 245, 245));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 0, 50));
 
-        inputPanel.add(new JLabel("Name:"));
-        nameField = new JTextField();
-        inputPanel.add(nameField);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
 
-        inputPanel.add(new JLabel("Category:"));
-        categoryField = new JTextField();
-        inputPanel.add(categoryField);
+        // Labels and fields
+        String[] labels = {"Name:", "Category:", "Price:", "Quantity:", "Supplier:"};
+        JTextField[] textFields = new JTextField[4];
+        for(int i=0;i<4;i++){
+            gbc.gridx=0; gbc.gridy=i;
+            JLabel lbl = new JLabel(labels[i]);
+            lbl.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            inputPanel.add(lbl, gbc);
 
-        inputPanel.add(new JLabel("Price:"));
-        priceField = new JTextField();
-        inputPanel.add(priceField);
+            gbc.gridx=1;
+            textFields[i] = new JTextField();
+            textFields[i].setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            inputPanel.add(textFields[i], gbc);
+        }
+        nameField=textFields[0]; categoryField=textFields[1]; priceField=textFields[2]; quantityField=textFields[3];
 
-        inputPanel.add(new JLabel("Quantity:"));
-        quantityField = new JTextField();
-        inputPanel.add(quantityField);
+        // Supplier ComboBox
+        gbc.gridx=0; gbc.gridy=4;
+        JLabel supplierLabel = new JLabel("Supplier:");
+        supplierLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        inputPanel.add(supplierLabel, gbc);
 
-        inputPanel.add(new JLabel("Supplier:"));
+        gbc.gridx=1;
         supplierBox = new JComboBox<>();
+        supplierBox.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        inputPanel.add(supplierBox, gbc);
         loadSuppliersIntoComboBox();
-        inputPanel.add(supplierBox);
 
         add(inputPanel, BorderLayout.NORTH);
 
         // --- Center panel for buttons + search + table ---
         JPanel centerPanel = new JPanel(new BorderLayout(10,10));
-        centerPanel.setBackground(Color.LIGHT_GRAY);
+        centerPanel.setBackground(new Color(245, 245, 245));
 
-        // Button panel (top of center panel)
+        // Button panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        buttonPanel.setBackground(Color.LIGHT_GRAY);
+        buttonPanel.setBackground(new Color(245, 245, 245));
 
-        JButton addButton = new JButton("Add Product");
-        JButton updateButton = new JButton("Update Product");
-        JButton deleteButton = new JButton("Delete Product");
-        JButton sellButton = new JButton("Sell Product");  // New button
+        JButton addButton = createStyledButton("Add Product");
+        JButton updateButton = createStyledButton("Update Product");
+        JButton deleteButton = createStyledButton("Delete Product");
+        JButton sellButton = createStyledButton("Sell Product");
 
         JButton[] buttons = {addButton, updateButton, deleteButton, sellButton};
-        for(JButton btn : buttons){
-            btn.setBackground(new Color(34,139,34));
-            btn.setForeground(Color.WHITE);
-            btn.setFocusPainted(false);
-            btn.setFont(new Font("Arial", Font.BOLD, 14));
-            btn.setPreferredSize(new Dimension(150,40));
-            buttonPanel.add(btn);
-        }
+        for(JButton btn : buttons) buttonPanel.add(btn);
+
         centerPanel.add(buttonPanel, BorderLayout.NORTH);
 
         // Search panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        searchPanel.setBackground(Color.LIGHT_GRAY);
+        searchPanel.setBackground(new Color(245, 245, 245));
         JLabel searchLabel = new JLabel("Search:");
-        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        searchLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
         searchField = new JTextField(20);
-        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
+        searchField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         searchPanel.add(searchLabel);
         searchPanel.add(searchField);
 
         // Table
         table = new JTable();
         model = new DefaultTableModel(new String[]{
-                "ID","Name","Category","Price","Quantity","Supplier","Sold"},0);  // Added Sold column
+                "ID","Name","Category","Price","Quantity","Supplier","Sold"},0);
         table.setModel(model);
         loadProducts();
         JScrollPane scrollPane = new JScrollPane(table);
 
         JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.setBackground(Color.LIGHT_GRAY);
+        tablePanel.setBackground(new Color(245, 245, 245));
         tablePanel.add(searchPanel, BorderLayout.NORTH);
         tablePanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -102,44 +108,18 @@ public class ProductUI extends JFrame {
         addButton.addActionListener(e -> addProduct());
         updateButton.addActionListener(e -> updateProduct());
         deleteButton.addActionListener(e -> deleteProduct());
-
-        // Sell product functionality
         sellButton.addActionListener(e -> sellProduct());
 
         // Search functionality
         searchField.addKeyListener(new KeyAdapter(){
-            public void keyReleased(KeyEvent e){
-                String keyword = searchField.getText().toLowerCase();
-                model.setRowCount(0);
-                try(Connection con = DB.getConnection()){
-                    String sql = "SELECT p.*, s.name AS supplier_name FROM product p " +
-                            "LEFT JOIN supplier s ON p.supplier_id = s.supplier_id " +
-                            "WHERE p.name LIKE ? OR p.category LIKE ? OR s.name LIKE ?";
-                    PreparedStatement ps = con.prepareStatement(sql);
-                    ps.setString(1, "%"+keyword+"%");
-                    ps.setString(2, "%"+keyword+"%");
-                    ps.setString(3, "%"+keyword+"%");
-                    ResultSet rs = ps.executeQuery();
-                    while(rs.next()){
-                        model.addRow(new Object[]{
-                                rs.getInt("product_id"),
-                                rs.getString("name"),
-                                rs.getString("category"),
-                                rs.getDouble("price"),
-                                rs.getInt("quantity"),
-                                rs.getString("supplier_name"),
-                                rs.getInt("sold")
-                        });
-                    }
-                } catch(Exception ex){ ex.printStackTrace(); }
-            }
+            public void keyReleased(KeyEvent e){ searchProducts(searchField.getText()); }
         });
 
         // Populate fields when selecting a row
         table.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e){
                 int row = table.getSelectedRow();
-                if(row >= 0){
+                if(row>=0){
                     nameField.setText(model.getValueAt(row,1).toString());
                     categoryField.setText(model.getValueAt(row,2).toString());
                     priceField.setText(model.getValueAt(row,3).toString());
@@ -150,6 +130,23 @@ public class ProductUI extends JFrame {
         });
 
         setVisible(true);
+    }
+
+    // --- Utility Methods ---
+
+    private JButton createStyledButton(String text){
+        JButton btn = new JButton(text);
+        btn.setBackground(new Color(52, 152, 219));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        btn.setPreferredSize(new Dimension(150,40));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt){ btn.setBackground(new Color(41,128,185)); }
+            public void mouseExited(java.awt.event.MouseEvent evt){ btn.setBackground(new Color(52,152,219)); }
+        });
+        return btn;
     }
 
     private void loadSuppliersIntoComboBox(){
@@ -180,7 +177,32 @@ public class ProductUI extends JFrame {
                         rs.getDouble("price"),
                         rs.getInt("quantity"),
                         rs.getString("supplier_name"),
-                        rs.getInt("sold")  // Sold column
+                        rs.getInt("sold")
+                });
+            }
+        } catch(Exception e){ e.printStackTrace(); }
+    }
+
+    private void searchProducts(String keyword){
+        model.setRowCount(0);
+        try(Connection con = DB.getConnection()){
+            String sql = "SELECT p.*, s.name AS supplier_name FROM product p " +
+                    "LEFT JOIN supplier s ON p.supplier_id = s.supplier_id " +
+                    "WHERE p.name LIKE ? OR p.category LIKE ? OR s.name LIKE ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, "%"+keyword+"%");
+            ps.setString(2, "%"+keyword+"%");
+            ps.setString(3, "%"+keyword+"%");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                model.addRow(new Object[]{
+                        rs.getInt("product_id"),
+                        rs.getString("name"),
+                        rs.getString("category"),
+                        rs.getDouble("price"),
+                        rs.getInt("quantity"),
+                        rs.getString("supplier_name"),
+                        rs.getInt("sold")
                 });
             }
         } catch(Exception e){ e.printStackTrace(); }
@@ -237,7 +259,6 @@ public class ProductUI extends JFrame {
         }
     }
 
-    // --- Sell Product functionality ---
     private void sellProduct(){
         int row = table.getSelectedRow();
         if(row < 0){
@@ -267,6 +288,6 @@ public class ProductUI extends JFrame {
     }
 
     public static void main(String[] args){
-        new ProductUI();
+        SwingUtilities.invokeLater(ProductUI::new);
     }
 }
