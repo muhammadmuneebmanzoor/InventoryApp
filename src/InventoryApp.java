@@ -5,22 +5,50 @@ import java.sql.*;
 
 public class InventoryApp extends JFrame {
 
-    public InventoryApp() {
+    InventoryApp() {
         setTitle("Inventory Management System");
-        setSize(400, 350);
+        setSize(600, 400);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(4, 1, 10, 10));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        JButton productButton = new JButton("Manage Products");
+        // Background
+        getContentPane().setBackground(Color.LIGHT_GRAY);
+
+        // Title
+        JLabel title = new JLabel("Inventory Management System", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        title.setForeground(Color.BLACK);
+        add(title, BorderLayout.NORTH);
+
+        // Button panel (vertical, center mein)
+        JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+        buttonPanel.setBackground(Color.LIGHT_GRAY);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+
+        JButton productButton = new JButton("Add Product");
         JButton supplierButton = new JButton("Manage Suppliers");
         JButton reportButton = new JButton("Generate Report");
         JButton exitButton = new JButton("Exit");
 
-        add(productButton);
-        add(supplierButton);
-        add(reportButton);
-        add(exitButton);
+        JButton[] buttons = {productButton, supplierButton, reportButton, exitButton};
+        for (JButton btn : buttons) {
+            btn.setBackground(new Color(34, 139, 34));
+            btn.setForeground(Color.WHITE);
+            btn.setFocusPainted(false);
+            btn.setFont(new Font("Arial", Font.BOLD, 14));
+            btn.setPreferredSize(new Dimension(200, 40));
+        }
 
+        buttonPanel.add(productButton);
+        buttonPanel.add(supplierButton);
+        buttonPanel.add(reportButton);
+        buttonPanel.add(exitButton);
+
+        add(buttonPanel, BorderLayout.CENTER);  // Buttons ko center mein vertical
+
+        // Action listeners
         productButton.addActionListener(e -> new ProductUI());
         supplierButton.addActionListener(e -> new SupplierUI());
         reportButton.addActionListener(e -> generateReport());
@@ -29,7 +57,6 @@ public class InventoryApp extends JFrame {
         setVisible(true);
     }
 
-    // REPORT GENERATION METHOD
     private void generateReport() {
         try (Connection con = DB.getConnection();
              FileWriter fw = new FileWriter("inventory_report.txt")) {
@@ -59,7 +86,6 @@ public class InventoryApp extends JFrame {
                 fw.write("-----------------------------\n");
             }
 
-            fw.close();
             JOptionPane.showMessageDialog(this, "Report Generated Successfully!\nFile: inventory_report.txt");
 
         } catch (Exception e) {
@@ -69,6 +95,6 @@ public class InventoryApp extends JFrame {
     }
 
     public static void main(String[] args) {
-        new InventoryApp();
+        new LoginUI();
     }
 }

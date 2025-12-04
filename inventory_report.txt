@@ -120,6 +120,12 @@ Category: food item
 Price: 1000.0
 Quantity: 10
 -----------------------------
+Product ID: 24
+Name: juice
+Category: liquid
+Price: 23232.0
+Quantity: 190
+-----------------------------
 
 
 === SUPPLIER REPORT ===
@@ -153,11 +159,6 @@ Supplier ID: 6
 Name: Organic Foods Ltd
 Contact: 444555666
 Email: contact@organicfoods.com
------------------------------
-Supplier ID: 7
-Name: Dairy Best
-Contact: 444444
-Email: info@dairybest.com
 -----------------------------
 Supplier ID: 8
 Name: Bakers Hub
@@ -208,4 +209,14 @@ Supplier ID: 20
 Name: Rao
 Contact: 121111222
 Email: rao@123
+-----------------------------
+Supplier ID: 24
+Name: hammad
+Contact: 12345432sdf
+Email: hadf
+-----------------------------
+Supplier ID: 25
+Name: ali
+Contact: 41236
+Email: @@@@
 -----------------------------
