@@ -4,127 +4,161 @@ Product ID: 1
 Name: Apple
 Category: Fruit
 Price: 10.0
-Quantity: 52
+Remaining Quantity: 40
+Total Sold: 12
+Supplier: null
 -----------------------------
 Product ID: 2
 Name: Banana
 Category: Fruit
 Price: 5.0
-Quantity: 102
+Remaining Quantity: 101
+Total Sold: 1
+Supplier: null
 -----------------------------
 Product ID: 3
 Name: Apple
 Category: Fruit
 Price: 10.0
-Quantity: 50
+Remaining Quantity: 50
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 4
 Name: Banana
 Category: Fruit
 Price: 5.0
-Quantity: 100
+Remaining Quantity: 100
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 5
 Name: Orange
 Category: Fruit
 Price: 12.0
-Quantity: 80
+Remaining Quantity: 80
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 6
 Name: Tomato
 Category: Vegetable
 Price: 8.5
-Quantity: 120
+Remaining Quantity: 100
+Total Sold: 20
+Supplier: null
 -----------------------------
 Product ID: 7
 Name: Potato
 Category: Vegetable
 Price: 4.0
-Quantity: 200
+Remaining Quantity: 200
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 8
 Name: Milk
 Category: Dairy
 Price: 15.0
-Quantity: 60
+Remaining Quantity: 60
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 9
 Name: Cheese
 Category: Dairy
 Price: 25.0
-Quantity: 30
+Remaining Quantity: 30
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 10
 Name: Bread
 Category: Bakery
 Price: 5.5
-Quantity: 100
+Remaining Quantity: 50
+Total Sold: 50
+Supplier: null
 -----------------------------
 Product ID: 11
 Name: Eggs
 Category: Poultry
 Price: 2.5
-Quantity: 300
+Remaining Quantity: 300
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 12
 Name: Chicken
 Category: Meat
 Price: 50.0
-Quantity: 40
+Remaining Quantity: 40
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 13
 Name: Rice
 Category: Grain
 Price: 30.0
-Quantity: 150
+Remaining Quantity: 150
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 14
 Name: Wheat Flour
 Category: Grain
 Price: 20.0
-Quantity: 100
+Remaining Quantity: 100
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 16
 Name: Apple
 Category: Fruit
 Price: 10.0
-Quantity: 1
+Remaining Quantity: 1
+Total Sold: 0
+Supplier: null
 -----------------------------
 Product ID: 18
 Name: Banana
 Category: Fruit
 Price: 5.0
-Quantity: 100
+Remaining Quantity: 100
+Total Sold: 0
+Supplier: azaz  sweets
 -----------------------------
 Product ID: 19
 Name: roti
 Category: bake
 Price: 10.0
-Quantity: 50
+Remaining Quantity: 50
+Total Sold: 0
+Supplier: Green Supply
 -----------------------------
 Product ID: 20
 Name: hamza
 Category: dangar
 Price: 69.0
-Quantity: 2
+Remaining Quantity: 2
+Total Sold: 0
+Supplier: muneeb
 -----------------------------
 Product ID: 21
 Name: chips
 Category: fast food
 Price: 100.0
-Quantity: 5
+Remaining Quantity: 5
+Total Sold: 0
+Supplier: Fresh Vegetables Co
 -----------------------------
 Product ID: 23
 Name: rice
 Category: food item
 Price: 1000.0
-Quantity: 10
------------------------------
-Product ID: 24
-Name: juice
-Category: liquid
-Price: 23232.0
-Quantity: 190
+Remaining Quantity: 10
+Total Sold: 0
+Supplier: null
 -----------------------------
 
 
@@ -187,18 +221,13 @@ Email: sales@meatmasters.com
 -----------------------------
 Supplier ID: 14
 Name: azaz  sweets
-Contact: 0307399807
+Contact: 0307399811
 Email: azaz69@gmail.com
 -----------------------------
 Supplier ID: 16
 Name: muneeb
 Contact: 03259539060
 Email: muneeb@1214
------------------------------
-Supplier ID: 17
-Name: talha
-Contact: 123
-Email: @talha
 -----------------------------
 Supplier ID: 19
 Name: syed hasan 
@@ -214,9 +243,4 @@ Supplier ID: 24
 Name: hammad
 Contact: 12345432sdf
 Email: hadf
------------------------------
-Supplier ID: 25
-Name: ali
-Contact: 41236
-Email: @@@@
 -----------------------------

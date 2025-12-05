@@ -75,19 +75,28 @@ public class InventoryApp extends JFrame {
              FileWriter fw = new FileWriter("inventory_report.txt")) {
 
             fw.write("=== PRODUCT REPORT ===\n\n");
+
+            // Updated query (includes supplier name + sold quantity)
+            String sql = "SELECT p.product_id, p.name, p.category, p.price, p.quantity, p.sold, " +
+                    "s.name AS supplier_name FROM product p " +
+                    "LEFT JOIN supplier s ON p.supplier_id = s.supplier_id";
+
             Statement st1 = con.createStatement();
-            ResultSet rs1 = st1.executeQuery("SELECT * FROM product");
+            ResultSet rs1 = st1.executeQuery(sql);
 
             while (rs1.next()) {
                 fw.write("Product ID: " + rs1.getInt("product_id") + "\n");
                 fw.write("Name: " + rs1.getString("name") + "\n");
                 fw.write("Category: " + rs1.getString("category") + "\n");
                 fw.write("Price: " + rs1.getDouble("price") + "\n");
-                fw.write("Quantity: " + rs1.getInt("quantity") + "\n");
+                fw.write("Remaining Quantity: " + rs1.getInt("quantity") + "\n");
+                fw.write("Total Sold: " + rs1.getInt("sold") + "\n");
+                fw.write("Supplier: " + rs1.getString("supplier_name") + "\n");
                 fw.write("-----------------------------\n");
             }
 
             fw.write("\n\n=== SUPPLIER REPORT ===\n\n");
+
             Statement st2 = con.createStatement();
             ResultSet rs2 = st2.executeQuery("SELECT * FROM supplier");
 
@@ -106,6 +115,7 @@ public class InventoryApp extends JFrame {
             JOptionPane.showMessageDialog(this, "Error generating report!");
         }
     }
+
 
     public static void main(String[] args) {
         try { UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel"); } catch(Exception e) {}
