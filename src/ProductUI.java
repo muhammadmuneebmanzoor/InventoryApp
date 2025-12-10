@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -45,6 +46,9 @@ public class ProductUI extends JFrame {
             inputPanel.add(textFields[i], gbc);
         }
         nameField=textFields[0]; categoryField=textFields[1]; priceField=textFields[2]; quantityField=textFields[3];
+
+        // Apply input filters
+        setInputFilters();
 
         // Supplier ComboBox
         gbc.gridx=0; gbc.gridy=4;
@@ -132,8 +136,37 @@ public class ProductUI extends JFrame {
         setVisible(true);
     }
 
-    // --- Utility Methods ---
+    // --- Input Filters ---
+    private void setInputFilters() {
+        ((AbstractDocument) nameField.getDocument()).setDocumentFilter(new AlphabetFilter());
+        ((AbstractDocument) categoryField.getDocument()).setDocumentFilter(new AlphabetFilter());
+        ((AbstractDocument) priceField.getDocument()).setDocumentFilter(new NumberFilter());
+        ((AbstractDocument) quantityField.getDocument()).setDocumentFilter(new NumberFilter());
+    }
 
+    class AlphabetFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            if (string.matches("[a-zA-Z ]+")) super.insertString(fb, offset, string, attr);
+        }
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (text.matches("[a-zA-Z ]+")) super.replace(fb, offset, length, text, attrs);
+        }
+    }
+
+    class NumberFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            if (string.matches("\\d+")) super.insertString(fb, offset, string, attr);
+        }
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (text.matches("\\d+")) super.replace(fb, offset, length, text, attrs);
+        }
+    }
+
+    // --- Utility Methods ---
     private JButton createStyledButton(String text){
         JButton btn = new JButton(text);
         btn.setBackground(new Color(52, 152, 219));
